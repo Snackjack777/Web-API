@@ -41,7 +41,7 @@ router.get("/", (req, res) => {
   router.post("/", (req, res) => {
     let movie: insertmovie = req.body;
     let sql =
-      "INSERT INTO `creators`(`person_id`, `person_id`) VALUES (?,?)";
+      "INSERT INTO `creators`(`person_id`, `movie_id`) VALUES (?,?)";
     sql = mysql.format(sql, [
         movie.person_id,
         movie.movie_id
