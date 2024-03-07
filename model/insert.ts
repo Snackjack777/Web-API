@@ -6,7 +6,8 @@ export interface insertmovie{
 
     name:string,
     profile:string,
-    img:string
+    img:string,
+    type:string
     
     person_id:number,
     movie_id:number

@@ -83,20 +83,27 @@ router.get("/:id", (req, res) => {
 
   router.get("/", (req, res) => {
     const searchTerm = req.query.searchTerm;
-    const query = `SELECT m.ttitle AS movie_title, m.poster, m.plot, GROUP_CONCAT(DISTINCT p.name) AS actor_names, GROUP_CONCAT(DISTINCT c.name) AS creator_names
-                   FROM movies m
-                   INNER JOIN stars s ON m.movie_id = s.movie_id
-                   INNER JOIN person p ON s.person_id = p.person_id
-                   INNER JOIN creators cr ON m.movie_id = cr.movie_id
-                   INNER JOIN person c ON cr.person_id = c.person_id
-                   WHERE m.ttitle LIKE '%${searchTerm}%'
-                   GROUP BY m.ttitle, m.poster, m.plot;`;
-  
+
+    // Construct the query with explicit aliases and type inclusion
+    const query = `
+        SELECT m.ttitle AS movie_title, m.poster, m.plot,
+               GROUP_CONCAT(DISTINCT p.name, ' (', s.type, ')') AS stars,
+               GROUP_CONCAT(DISTINCT c.name, ' (', cr.type, ')') AS creator
+        FROM movies m
+        INNER JOIN stars s ON m.movie_id = s.movie_id
+        INNER JOIN person p ON s.person_id = p.person_id
+        INNER JOIN creators cr ON m.movie_id = cr.movie_id
+        INNER JOIN person c ON cr.person_id = c.person_id
+        WHERE m.ttitle LIKE '%${searchTerm}%'
+        GROUP BY m.ttitle, m.poster, m.plot;
+    `;
+
     conn.query(query, (err, result, fields) => {
-      if (err) {
-        res.status(500).json({ error: err.message });
-        return;
-      }
-      res.json(result);
+        if (err) {
+            res.status(500).json({ error: err.message });
+            return;
+        }
+
+        res.json(result);
     });
-  });
+});
