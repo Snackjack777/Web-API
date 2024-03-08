@@ -33,7 +33,7 @@ export const router = express.Router();
   
 
   router.get("/", (req, res) => {
-    conn.query('SELECT m.ttitle AS movie_title, m.plot, GROUP_CONCAT(DISTINCT p.name) AS actor_names, GROUP_CONCAT(DISTINCT c.name) AS creator_names   FROM movies m  INNER JOIN stars s ON m.movie_id = s.movie_id  INNER JOIN person p ON s.person_id = p.person_id  INNER JOIN creators cr ON m.movie_id = cr.movie_id  INNER JOIN person c ON cr.person_id = c.person_id  GROUP BY m.ttitle, m.plot;', (err, result, fields)=>{
+    conn.query('SELECT `movie_id`, `title`, `plot`, `poster` FROM `movies` WHERE 1', (err, result, fields)=>{
       if (err) {
         res.status(500).json({ error: err.message });
         res.json(result);
