@@ -17,7 +17,7 @@ export const router = express.Router();
 
   // router.get("/search/fields", (req, res) => {
   //   conn.query(
-  //     "select * from movies where (movie_id IS NULL OR movie_id = ?) OR (ttitle IS NULL OR ttitle like ?)",
+  //     "select * from movies where (movie_id IS NULL OR movie_id = ?) OR (title IS NULL OR title like ?)",
   //     [ req.query.id, "%" + req.query.name + "%"],
   //     (err, result, fields) => {
   //     if (err) throw err;
@@ -30,9 +30,9 @@ export const router = express.Router();
   router.post("/", (req, res) => {
     let movie: insertmovie = req.body;
     let sql =
-      "INSERT INTO `movies`(`ttitle`, `plot`, `poster`) VALUES (?,?,?)";
+      "INSERT INTO `movies`(`title`, `plot`, `poster`) VALUES (?,?,?)";
     sql = mysql.format(sql, [
-      movie.ttitle,
+      movie.title,
       movie.plot,
       movie.poster
     ]);
@@ -40,7 +40,7 @@ export const router = express.Router();
       if (err) throw err;
       res
         .status(201)
-        .json({ affected_row: result.affectedRows, movie_id: result.insertId });
+        .json({ affected_row: result.affectedRows, movies_id: result.insertId });
     });
   });
 
@@ -64,9 +64,9 @@ export const router = express.Router();
     let id = +req.params.id;
     let movie: insertmovie = req.body;
     let sql =
-      "update  `movies` set `ttitle`=?, `plot`=?, `poster`=? where `movie_id`=?";
+      "update  `movies` set `title`=?, `plot`=?, `poster`=? where `movie_id`=?";
     sql = mysql.format(sql, [
-      movie.ttitle,
+      movie.title,
       movie.plot,
       movie.poster,
       id
@@ -86,7 +86,7 @@ export const router = express.Router();
 
 //     // Construct the query with explicit aliases and type inclusion
 //     const query = `
-//         SELECT m.ttitle AS movie_title, m.poster, m.plot,
+//         SELECT m.title AS movie_title, m.poster, m.plot,
 //                GROUP_CONCAT(DISTINCT p.name, ' (', s.type, ')') AS stars,
 //                GROUP_CONCAT(DISTINCT c.name, ' (', cr.type, ')') AS creator
 //         FROM movies m
@@ -94,8 +94,8 @@ export const router = express.Router();
 //         INNER JOIN person p ON s.person_id = p.person_id
 //         INNER JOIN creators cr ON m.movie_id = cr.movie_id
 //         INNER JOIN person c ON cr.person_id = c.person_id
-//         WHERE m.ttitle LIKE '%${searchTerm}%'
-//         GROUP BY m.ttitle, m.poster, m.plot;
+//         WHERE m.title LIKE '%${searchTerm}%'
+//         GROUP BY m.title, m.poster, m.plot;
 //     `;
 
 //     conn.query(query, (err, result, fields) => {

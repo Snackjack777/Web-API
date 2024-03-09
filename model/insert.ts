@@ -1,6 +1,6 @@
 export interface insertmovie{
     
-    ttitle:string,
+    title:string,
     plot:string,
     poster:string,
 

@@ -55,6 +55,6 @@ router.get("/", (req, res) => {
       if (err) throw err;
       res
         .status(201)
-        .json({ affected_row: result.affectedRows, movie_id: result.insertId });
+        .json({ affected_row: result.affectedRows, stars_id: result.insertId });
     });
   });

@@ -42,7 +42,7 @@ router.get("/", (req, res) => {
   router.post("/", (req, res) => {
     let movie: insertmovie = req.body;
     let sql =
-      "INSERT INTO `creators`(`person_id`, `movie_id`, `type`=?) VALUES (?,?)";
+      "INSERT INTO `creators`(`person_id`, `movie_id`, `type`) VALUES (?,?,?)";
     sql = mysql.format(sql, [
         movie.person_id,
         movie.movie_id,
@@ -52,6 +52,6 @@ router.get("/", (req, res) => {
       if (err) throw err;
       res
         .status(201)
-        .json({ affected_row: result.affectedRows, movie_id: result.insertId });
+        .json({ affected_row: result.affectedRows, creators_id: result.insertId });
     });
   });

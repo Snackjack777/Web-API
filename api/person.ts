@@ -53,6 +53,6 @@ export const router = express.Router();
       if (err) throw err;
       res
         .status(201)
-        .json({ affected_row: result.affectedRows, movie_id: result.insertId });
+        .json({ affected_row: result.affectedRows, person_id: result.insertId });
     });
   });
